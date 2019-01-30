@@ -1,0 +1,29 @@
+{
+    "name": "vortechron/laravel-essentials",
+    "description": "Basic scaffolding for your laravel projects.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Amirul Adli",
+            "email": "sayaamiruladli@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "src/Http/helpers.php"
+        ],
+        "psr-4": {
+            "Vortechron\\Essentials\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vortechron\\Essentials\\ServiceProvider"
+            ]
+        }
+    }
+}
