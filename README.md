@@ -9,7 +9,8 @@ then,
 run ``` php artisan essentials:install ```
 
 this will,
-1. modify package.json (u need to npm update)
+1. modify package.json (u need to npm update after that)
+```
     "@estudioliver/vue-uuid-v4": "^1.0.0",
     "bootstrap-vue": "^2.0.0-rc.11",
     "form-backend-validation": "^2.3.3",
@@ -30,6 +31,7 @@ this will,
     "vue-wait": "^1.3.2",
     "vue2-transitions": "^0.2.3",
     "vuedraggable": "^2.16.0"
+```
 2. publish resources/essentials/app.js and app.scss
 3. modify webpack.mix.js (u need to npm run dev)
 
