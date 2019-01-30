@@ -3,6 +3,8 @@
 namespace Vortechron\Essentials\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Filesystem\Filesystem;
 
 class Install extends Command
 {
@@ -60,10 +62,20 @@ class Install extends Command
      */
     public function handle()
     {
-        $this->modifyPackageJSON();
+        if ($this->confirm('Do you want to modify package.json?')) {
+            $this->modifyPackageJSON();
+            $this->info('Successfully modify package.json.');
+        }
 
-        $this->publishAssets();
+        if ($this->confirm('Do you want to publish necessary assets?')) {
+            $this->publishAssets();
+            $this->info('Successfully publish assets.');
+        }
 
+        if ($this->confirm('Do you want to modify webpack.mix.js?')) {
+            $this->modifyWebpackMixJs();
+            $this->info('Successfully modify webpack.mix.js');
+        }
     }
 
     protected function modifyPackageJSON()
@@ -77,5 +89,26 @@ class Install extends Command
 
         $newJsonString = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         file_put_contents(base_path('package.json'), $newJsonString);
+    }
+
+    protected function publishAssets()
+    {
+        $from = __DIR__ .'/../../resources/assets';
+        $to = base_path('resources/vortechron/laravel-essentials');
+
+        (new Filesystem)->copyDirectory($from, $to);
+    }
+
+    protected function modifyWebpackMixJs()
+    {
+        $string = "mix.js('resources/vortechron/laravel-essentials/js/app.js', 'public/js')
+        .sass('resources/vortechron/laravel-essentials/sass/app.scss', 'public/css');";
+
+        $filesystem = Storage::createLocalDriver([
+            'driver' => 'local',
+            'root' => base_path()
+        ]);
+
+        $filesystem->append('webpack.mix.js', $string);
     }
 }

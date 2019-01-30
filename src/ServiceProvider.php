@@ -22,18 +22,25 @@ class ServiceProvider extends BaseServiceProvider
             ]);
         }
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'vtr');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', config('laravel-essentials.view_namespace'));
+        
+        if ($this->app->runningInConsole()) {
+            
+            $this->publishes([
+                __DIR__.'/../config/config.php' => config_path('laravel-essentials.php'),
+            ], 'config');
+        }
     }
 
     public function register()
     {
-        
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'laravel-essentials');
     }
 
     protected function bootBlade()
     {
-        Blade::include('supports.errors', 'errors');
-        Blade::include('supports.alerts', 'alerts');
+        Blade::include(config('laravel-essentials.view_namespace') . '::supports.errors', 'errors');
+        Blade::include(config('laravel-essentials.view_namespace') . '::supports.alerts', 'alerts');
 
         Blade::directive('old', function ($expression) {
             return "<?php echo old($expression); ?>";
