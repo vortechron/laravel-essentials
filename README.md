@@ -6,6 +6,8 @@ This package provide basic scaffolding for your next big project.
 
 ``` composer require vortechron/laravel-essentials ```
 
+optionally you can publish config file.
+
 then,
 
 run ``` php artisan essentials:install ```
@@ -13,6 +15,7 @@ run ``` php artisan essentials:install ```
 this will,
 1. modify package.json (u need to npm update after that)
 ```
+    // you can opt out in config file
     "@estudioliver/vue-uuid-v4": "^1.0.0",
     "bootstrap-vue": "^2.0.0-rc.11",
     "form-backend-validation": "^2.3.3",
