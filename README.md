@@ -1,5 +1,7 @@
 # Laravel Essentials
 
+This package provide basic scaffolding for your next big project.
+
 ## installation
 
 ``` composer require vortechron/laravel-essentials ```
@@ -32,8 +34,8 @@ this will,
     "vue2-transitions": "^0.2.3",
     "vuedraggable": "^2.16.0"
 ```
-2. publish resources/essentials/app.js and app.scss
-3. modify webpack.mix.js (u need to npm run dev)
+2. publish resources/vortechron/laravel-essentials/app.js and app.scss
+3. modify webpack.mix.js (u need to npm run dev after that)
 
 
 # What it can do?
