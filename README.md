@@ -44,10 +44,12 @@ see Http/helpers.php
 
 ## blade helper
 
+```
 @errors // with danger() helper
 @alerts // with flash() helper
 @old // alias to {{ old() }}
 @route // alias to {{ route() }}
+```
 
 ## other
 
