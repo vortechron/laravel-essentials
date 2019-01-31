@@ -1,6 +1,6 @@
 # Laravel Essentials
 
-This package provide basic scaffolding for your next big project.
+This package provide basic scaffolding for your next big project. This package heavily depend on bootstrap-vue.
 
 ## installation
 
