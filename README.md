@@ -47,6 +47,10 @@ this will,
 
 see Http/helpers.php
 
+plus
+
+see https://github.com/calebporzio/awesome-helpers
+
 ## blade helper
 
 ```

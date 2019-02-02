@@ -10,7 +10,9 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "calebporzio/awesome-helpers": "*"
+    },
     "autoload": {
         "files": [
             "src/Http/helpers.php"
