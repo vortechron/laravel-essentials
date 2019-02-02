@@ -1,6 +1,6 @@
 {
     "name": "vortechron/laravel-essentials",
-    "description": "Basic scaffolding for your laravel projects.",
+    "description": "Basic tool for your laravel projects.",
     "type": "library",
     "license": "MIT",
     "authors": [
