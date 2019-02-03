@@ -60,6 +60,10 @@ see https://github.com/calebporzio/awesome-helpers
 @route // alias to {{ route() }}
 ```
 
+## vuejs directives
+
+v-post - v-post on any anchor element to give the capability to post request to given route, example ```<a v-post="'@route('users.destroy', $user)'">```
+
 ## other
 
 fix mysql error: Specified key was too long error
