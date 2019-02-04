@@ -11,7 +11,8 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "calebporzio/awesome-helpers": "*"
+        "calebporzio/awesome-helpers": "*",
+        "tightenco/ziggy": "*"
     },
     "autoload": {
         "files": [
