@@ -39,8 +39,10 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function bootBlade()
     {
-        Blade::include(config('laravel-essentials.view_namespace') . '::supports.errors', 'errors');
-        Blade::include(config('laravel-essentials.view_namespace') . '::supports.alerts', 'alerts');
+        if (config('laravel-essentials.enable_blade_include')) {
+            Blade::include(config('laravel-essentials.view_namespace') . '::supports.errors', 'errors');
+            Blade::include(config('laravel-essentials.view_namespace') . '::supports.alerts', 'alerts');
+        }
 
         Blade::directive('old', function ($expression) {
             return "<?php echo old($expression); ?>";

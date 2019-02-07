@@ -1,6 +1,9 @@
 <?php
 
 return [
+
+    'enable_blade_include' => true,
+
     'view_namespace' => 'vtr',
 
     'commands' => [
