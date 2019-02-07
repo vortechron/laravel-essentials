@@ -2,7 +2,7 @@
 
 return [
 
-    'enable_blade_include' => true,
+    'enable_blade_include' => false,
 
     'view_namespace' => 'vtr',
 
