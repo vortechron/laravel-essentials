@@ -158,3 +158,17 @@ if (! function_exists('user')) {
         return \Auth::user();
     }
 }
+
+if (! function_exists('timestamp_format()')) {
+    function timestamp_format()
+    {
+        return 'Y-m-d H:i:s';
+    }
+}
+
+if (! function_exists('datetime_format()')) {
+    function datetime_format()
+    {
+        return 'Y-m-d\Th:i';
+    }
+}
