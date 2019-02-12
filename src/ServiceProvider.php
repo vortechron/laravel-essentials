@@ -51,5 +51,9 @@ class ServiceProvider extends BaseServiceProvider
         Blade::directive('route', function ($expression) {
             return "<?php echo route($expression); ?>";
         });
+        
+        Blade::directive('config', function ($expression) {
+            return "<?php echo config($expression); ?>";
+        });
     }
 }
