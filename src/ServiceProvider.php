@@ -59,8 +59,10 @@ class ServiceProvider extends BaseServiceProvider
         foreach (['null', 'false', 'true'] as $value) {
             Blade::directive('declare'. ucfirst($value), function ($expression) use ($value) {
                 return "<?php 
-                
-                $expression = isset($expression) ? $expression : $value;
+
+                foreach([$expression] as \$arg) {
+                    $\$arg = isset($\$arg) ? $\$arg : $value;
+                }
                 
                 ?>";
             });
