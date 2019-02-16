@@ -56,28 +56,14 @@ class ServiceProvider extends BaseServiceProvider
             return "<?php echo config($expression); ?>";
         });
         
-        Blade::directive('declareNull', function ($expression) {
-            return "<?php 
-            
-            $expression = isset($expression) ? $expression : null;
-            
-            ?>";
-        });
-
-        Blade::directive('declareFalse', function ($expression) {
-            return "<?php 
-            
-            $expression = isset($expression) ? $expression : false;
-            
-            ?>";
-        });
-
-        Blade::directive('declareTrue', function ($expression) {
-            return "<?php 
-            
-            $expression = isset($expression) ? $expression : true;
-            
-            ?>";
-        });
+        foreach (['null', 'false', 'true'] as $value) {
+            Blade::directive('declare'. ucfirst($value), function ($expression) use ($value) {
+                return "<?php 
+                
+                $expression = isset($expression) ? $expression : $value;
+                
+                ?>";
+            });
+        }
     }
 }
