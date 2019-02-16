@@ -72,7 +72,7 @@ use case
 @extends('layouts.app', ['padding' => false])
 
 // layouts.app
-@declareTrue($padding) 
+@declareTrue('padding') 
 <main class="
 
 @if($padding) // $padding variable will return true if undefine else it will return it define variable from @extends
