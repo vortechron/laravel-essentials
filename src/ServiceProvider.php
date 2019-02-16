@@ -56,8 +56,28 @@ class ServiceProvider extends BaseServiceProvider
             return "<?php echo config($expression); ?>";
         });
         
-        Blade::if('has', function ($variable, $default = false) {
-            return isset($$variable) ? $$variable : $default;
+        Blade::directive('declareNull', function ($expression) {
+            return "<?php 
+            
+            $expression = isset($expression) ? $expression : null;
+            
+            ?>";
+        });
+
+        Blade::directive('declareFalse', function ($expression) {
+            return "<?php 
+            
+            $expression = isset($expression) ? $expression : false;
+            
+            ?>";
+        });
+
+        Blade::directive('declareTrue', function ($expression) {
+            return "<?php 
+            
+            $expression = isset($expression) ? $expression : true;
+            
+            ?>";
         });
     }
 }
