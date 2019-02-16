@@ -60,9 +60,9 @@ see https://github.com/calebporzio/awesome-helpers
 @route // alias to {{ route() }}
 ```
 
-## glorious @has directives
+## glorious @declareFalse @declareTrue @declareNull directives
 
-use case 
+use case
 
 ```
 // auth.register
@@ -72,11 +72,12 @@ use case
 @extends('layouts.app', ['padding' => false])
 
 // layouts.app
+@declareTrue($padding) 
 <main class="
 
-@has('padding')
+@if($padding) // $padding variable will return true if undefine else it will return it define variable from @extends
 py-4
-@endhas
+@endif
 
 ">
     @yield('content')
