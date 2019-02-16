@@ -69,10 +69,12 @@ use case
 @extends('layouts.app')
 
 // auth.register-no-padding
-@extends('layouts.app', ['padding' => false])
+@extends('layouts.app', ['padding' => false, 'um' => 'test'])
 
 // layouts.app
 @declareTrue('padding') 
+@declareNull('hm', 'um') 
+@declareFalse('hmm') 
 <main class="
 
 @if($padding) // $padding variable will return true if undefine else it will return it define variable from @extends
@@ -82,6 +84,8 @@ py-4
 ">
     @yield('content')
 </main>
+
+@dump($hm, $um, $hmm) // null, 'test', false
 ```
 
 
