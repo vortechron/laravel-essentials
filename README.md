@@ -60,6 +60,30 @@ see https://github.com/calebporzio/awesome-helpers
 @route // alias to {{ route() }}
 ```
 
+## glorious @has directives
+
+use case 
+
+```
+// auth.register
+@extends('layouts.app')
+
+// auth.register-no-padding
+@extends('layouts.app', ['padding' => false])
+
+// layouts.app
+<main class="
+
+@has('padding')
+py-4
+@endhas
+
+">
+    @yield('content')
+</main>
+```
+
+
 ## vuejs directives
 
 v-post - v-post on any anchor element to give the capability to post request to given route, example ```<a v-post="'@route('users.destroy', $user)'">```
