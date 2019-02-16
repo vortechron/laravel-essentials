@@ -56,8 +56,8 @@ class ServiceProvider extends BaseServiceProvider
             return "<?php echo config($expression); ?>";
         });
         
-        Blade::if('has', function ($variable) {
-            return isset($$variable) ? $$variable : false;;
+        Blade::if('has', function ($variable, $default = false) {
+            return isset($$variable) ? $$variable : $default;
         });
     }
 }
