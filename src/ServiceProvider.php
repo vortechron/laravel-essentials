@@ -67,5 +67,14 @@ class ServiceProvider extends BaseServiceProvider
                 ?>";
             });
         }
+        
+        Blade::directive('declareWithDefault'. ucfirst($value), function ($expression) use ($value) {
+            
+            list($variable, $default) = explode(',',str_replace(['(',')',' ', "'"], '', $expression));
+            
+            return "<?php 
+            $\$variable = isset($\$variable) ? $\$variable : $default;
+            ?>";
+        });
     }
 }
