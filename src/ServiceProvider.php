@@ -9,6 +9,14 @@ use Vortechron\Essentials\Commands\Install;
 
 class ServiceProvider extends BaseServiceProvider
 {
+    protected $formFields = [
+        'select', 'input', 'richtextarea', 'textarea', 'checkbox'
+    ];
+
+    protected $components = [
+        'images'
+    ];
+
     public function boot()
     {
         // Fix mysql issue
@@ -39,10 +47,26 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function bootBlade()
     {
+        $namespace = config('laravel-essentials.view_namespace');
+
         if (config('laravel-essentials.enable_blade_include')) {
             Blade::include(config('laravel-essentials.view_namespace') . '::supports.errors', 'errors');
             Blade::include(config('laravel-essentials.view_namespace') . '::supports.alerts', 'alerts');
         }
+
+        Blade::directive('indexer', function ($expression) use ($namespace) {
+            return "<?php echo app('view')->make($namespace::components.indexer', ['model' => $expression]) ?>";
+        });
+
+        foreach ($this->formFields as $field) {
+            Blade::include($namespace .'::components.formfields.'. $field, $field);
+        }
+        
+        foreach ($this->components as $comp) {
+            Blade::include($namespace .'::components.'. $comp, $comp);
+        }
+
+        Blade::include($namespace .'::components.errors', 'error');
 
         Blade::directive('old', function ($expression) {
             return "<?php echo old($expression); ?>";
