@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Validation\ValidationException;
+
 if (! function_exists('dangerInJson')) {
     function dangerInJson($array)
     {
