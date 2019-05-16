@@ -57,7 +57,7 @@ class ServiceProvider extends BaseServiceProvider
         if (config('laravel-essentials.enable_blade_components')) {
 
             Blade::directive('indexer', function ($expression) use ($namespace) {
-                return "<?php echo app('view')->make("{$namespace}::components.indexer", ['model' => $expression]) ?>";
+                return "<?php echo app('view')->make('{$namespace}::components.indexer', ['model' => $expression]) ?>";
             });
 
             foreach ($this->formFields as $field) {
