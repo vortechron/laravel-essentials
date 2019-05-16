@@ -53,18 +53,23 @@ class ServiceProvider extends BaseServiceProvider
             Blade::include(config('laravel-essentials.view_namespace') . '::supports.errors', 'errors');
             Blade::include(config('laravel-essentials.view_namespace') . '::supports.alerts', 'alerts');
         }
-
-        Blade::directive('indexer', function ($expression) use ($namespace) {
-            return "<?php echo app('view')->make($namespace::components.indexer', ['model' => $expression]) ?>";
-        });
-
-        foreach ($this->formFields as $field) {
-            Blade::include($namespace .'::components.formfields.'. $field, $field);
-        }
         
-        foreach ($this->components as $comp) {
-            Blade::include($namespace .'::components.'. $comp, $comp);
+        if (config('laravel-essentials.enable_blade_components')) {
+
+            Blade::directive('indexer', function ($expression) use ($namespace) {
+                return "<?php echo app('view')->make("{$namespace}::components.indexer", ['model' => $expression]) ?>";
+            });
+
+            foreach ($this->formFields as $field) {
+                Blade::include($namespace .'::components.formfields.'. $field, $field);
+            }
+
+            foreach ($this->components as $comp) {
+                Blade::include($namespace .'::components.'. $comp, $comp);
+            }
+            
         }
+            
 
         Blade::include($namespace .'::components.errors', 'error');
 
