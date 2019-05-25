@@ -37,7 +37,7 @@ table.dataTable thead .sorting_desc_disabled:after {
                 @endforeach
                 <td>
                     <a name="" id="" href="{{ $item->indexerViewRoute() }}" role="button">
-                        <i class="icon voyager-eye"></i>
+                        <i class="fa fa-eye"></i>
                     </a>
                 </td>
             </tr>
