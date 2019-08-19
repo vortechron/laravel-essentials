@@ -44,14 +44,6 @@ table.dataTable thead .sorting_desc_disabled:after {
             @endforeach
 
         </tbody>
-        <tfoot>
-            <tr>
-                @foreach ($model->indexerColumns as $column)
-                <th class="capitalize">{{ str_replace('_', ' ', $column) }}</th>
-                @endforeach
-                <th class="capitalize"></th>
-            </tr>
-        </tfoot>
     </table>
 </div>
 
