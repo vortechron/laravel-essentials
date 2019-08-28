@@ -38,7 +38,7 @@ if (! function_exists('is_equal_url')) {
         if (is_string($route)) {
             $route = [$route];
         }
-        return str_replace(['http', 'https'], '', route(...$route)) == str_replace(['http', 'https'], '', \Request::url());
+        return str_replace(['https', 'http'], '', route(...$route)) == str_replace(['https', 'http'], '', \Request::url());
     }
 }
 
