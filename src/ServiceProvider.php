@@ -69,7 +69,10 @@ class ServiceProvider extends BaseServiceProvider
             }
             
         }
-            
+        
+        if (config('laravel-essentials.enable_error')) {
+            Blade::include($namespace .'::components.errors', 'error');
+        }
 
         Blade::include($namespace .'::components.errors', 'error');
 
