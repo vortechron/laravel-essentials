@@ -3,6 +3,8 @@
 return [
 
     'enable_blade_include' => false,
+    'enable_blade_components' => false,
+    'enable_error' => false,
 
     'view_namespace' => 'vtr',
 
