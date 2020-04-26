@@ -43,20 +43,20 @@ if (! function_exists('is_equal_url')) {
 }
 
 if (! function_exists('add_class_by_route')) {
-    function add_class_by_route($route, $class = 'active')
+    function add_class_by_route($route, $class = 'active', $elseClass = '')
     {
         if (!is_equal_url($route)) {
-            return;
+            return $elseClass;
         }
         return $class;
     }
 }
 
 if (! function_exists('add_class_by_controller')) {
-    function add_class_by_controller($controller, $class = 'active')
+    function add_class_by_controller($controller, $class = 'active', $elseClass = '')
     {
         if (! current_inside_controller($controller)) {
-            return;
+            return $elseClass;
         }
         return $class;
     }
