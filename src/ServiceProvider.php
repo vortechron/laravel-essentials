@@ -5,6 +5,7 @@ namespace Vortechron\Essentials;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
+use Vortechron\Essentials\Commands\GenerateCountries;
 use Vortechron\Essentials\Commands\Install;
 
 class ServiceProvider extends BaseServiceProvider
@@ -27,6 +28,7 @@ class ServiceProvider extends BaseServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Install::class,
+                GenerateCountries::class,
             ]);
         }
 

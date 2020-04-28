@@ -1,5 +1,5 @@
 @if ($errors->any())
-<div class="rounded-md bg-red-50 p-4">
+<div class="rounded-md bg-red-50 p-4 mb-4">
     <div class="flex">
         <div class="flex-shrink-0">
             <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
@@ -10,7 +10,7 @@
         </div>
         <div class="ml-3">
             <h3 class="text-sm leading-5 font-medium text-red-800">
-                There were {{ count($errors->all) }} error(s) with your submission
+                There were {{ count($errors->all()) }} error(s) with your submission
             </h3>
             <div class="mt-2 text-sm leading-5 text-red-700">
                 <ul class="list-disc pl-5">

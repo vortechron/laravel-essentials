@@ -12,6 +12,7 @@
     "minimum-stability": "dev",
     "require": {
         "calebporzio/awesome-helpers": "*",
+        "pragmarx/countries": "^0.7.0",
         "tightenco/ziggy": "*"
     },
     "autoload": {
