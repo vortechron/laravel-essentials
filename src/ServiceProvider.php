@@ -43,20 +43,14 @@ class ServiceProvider extends BaseServiceProvider
         }
 
         Route::get(
-            '/pragmarx/countries/flag/file/{cca3}.svg',
-            [
-                'name' => 'pragmarx.countries.flag.file',
-                'uses' => '\PragmaRX\CountriesLaravel\Package\Http\Controllers\Flag@file',
-            ]
-        );
-        
+            'countries/flags/file/{cca3}.svg',
+            'PragmaRX\CountriesLaravel\Package\Http\Controllers\Flag@file'
+        )->name('countries.flags.file');
         Route::get(
-            '/pragmarx/countries/flag/download/{cca3}.svg',
-            [
-                'name' => 'pragmarx.countries.flag.download',
-                'uses' => '\PragmaRX\CountriesLaravel\Package\Http\Controllers\Flag@download',
-            ]
-        );
+            'countries/flags/download/{cca3}.svg',
+            'PragmaRX\CountriesLaravel\Package\Http\Controllers\Flag@download'
+        )->name('countries.flags.download');
+
     }
 
     public function register()

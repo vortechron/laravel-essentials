@@ -53,9 +53,9 @@ class GenerateCountries extends Command
                     $commonName = $country->name->common;
     
                     return [
-                        'name' => $commonName ,
+                        'name' => $commonName,
                         'code' => $country->cca2,
-                        'flag' => $country->flag->flag_icon,
+                        'flag' => route('countries.flag.file', $country->cca3),
                         'states' => $country->states->pluck('name')->values()->toArray()
                     ];
                 })
