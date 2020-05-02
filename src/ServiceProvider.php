@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Vortechron\Essentials\Commands\GenerateCountries;
 use Vortechron\Essentials\Commands\Install;
+use Illuminate\Support\Facades\Route;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -40,6 +41,22 @@ class ServiceProvider extends BaseServiceProvider
                 __DIR__.'/../config/config.php' => config_path('laravel-essentials.php'),
             ], 'config');
         }
+
+        Route::get(
+            '/pragmarx/countries/flag/file/{cca3}.svg',
+            [
+                'name' => 'pragmarx.countries.flag.file',
+                'uses' => '\PragmaRX\CountriesLaravel\Package\Http\Controllers\Flag@file',
+            ]
+        );
+        
+        Route::get(
+            '/pragmarx/countries/flag/download/{cca3}.svg',
+            [
+                'name' => 'pragmarx.countries.flag.download',
+                'uses' => '\PragmaRX\CountriesLaravel\Package\Http\Controllers\Flag@download',
+            ]
+        );
     }
 
     public function register()
