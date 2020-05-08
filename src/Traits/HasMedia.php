@@ -30,11 +30,11 @@ trait HasMedia
         if ($media) {
             // Resync Media
             $this->updateMedia(
-                Media::whereIn('id', $media)->get()->toArray(), 
+                config('medialibrary.media_model')::whereIn('id', $media)->get()->toArray(), 
                 $collection
             );
     
-            Media::setNewOrder($media);
+            config('medialibrary.media_model')::setNewOrder($media);
         } else {
             $this->updateMedia(
                 [], 
