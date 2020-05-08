@@ -1,49 +1,158 @@
 # Laravel Essentials
 
-This package provide basic scaffolding for your next big project. This package heavily depend on bootstrap-vue.
+This package provide basic scaffolding for your next big project. This package heavily depend on [v-essentials](https://www.npmjs.com/package/v-essentials)
 
 ## installation
 
 ``` composer require vortechron/laravel-essentials ```
 
-optionally you can publish config file.
-
-then,
-
-run ``` php artisan essentials:install ```
-
-this will,
-1. modify package.json (u need to npm update after that)
+``` 
+php artisan vendor:publish --provider="Vortechron\Essentials\ServiceProvider"
+php artisan migrate
 ```
-    // you can opt out in config file
-    "@estudioliver/vue-uuid-v4": "^1.0.0",
-    "bootstrap-vue": "^2.0.0-rc.11",
-    "form-backend-validation": "^2.3.3",
-    "moment": "^2.22.2",
-    "moment-timezone": "^0.5.21",
-    "slugify": "^1.3.1",
-    "sweetalert2": "^7.28.4",
-    "tailwindcss": "^0.6.6",
-    "v-money": "^0.8.1",
-    "validator": "^10.8.0",
-    "vue-avatar": "^2.1.6",
-    "vue-element-loading": "^1.0.4",
-    "vue-flatpickr-component": "^7.0.6",
-    "vue-form-generator": "^2.3.1",
-    "vue-multiselect": "^2.1.3",
-    "vue-overdrive": "0.0.12",
-    "vue-social-sharing": "^2.3.3",
-    "vue-wait": "^1.3.2",
-    "vue2-transitions": "^0.2.3",
-    "vuedraggable": "^2.16.0"
-```
-2. publish resources/vortechron/laravel-essentials/app.js and app.scss
-3. modify webpack.mix.js (u need to npm run dev after that)
-
 
 # What it can do?
 
+## Easy CRUD
+
+TL;DR
+<details><summary>Show Code</summary>
+<p>
+
+- Requirement
+
+```
+// On Model
+use \Vortechron\Essentials\Traits\HasMedia;
+use \Vortechron\Essentials\Traits\Modeler;
+```
+
+```
+// On Controller
+use \Vortechron\Essentials\Traits\Controller\HasCrud;
+```
+
+- Example Usage
+
+PostController.php
+```
+public function create()
+{
+    // forModel just a convinient way to normalize null data.
+    $this->prepareData(
+        $post->forModel(['author'], ['featured']),
+        route('post.create')
+    );
+
+    return view('post.template');
+}
+
+// for model creation/update we dont dictate how you want to do it, its all depend on you
+// except for media
+public function store(Request $request)
+{
+    $post = \App\Post::create($request->only('title', 'description'));
+
+    // must use saveMedia if you use our fieldMediaUpload
+    $post->saveMedia($request->featured, 'collection_name');
+
+    return view('post.template');
+}
+
+public function edit(Post $post)
+{
+    $this->prepareData(
+        $post->forModel(['author'], ['featured']),
+        route('post.update', $post)
+    );
+
+    return view('post.template');
+}
+
+public function update(Request $request, Post $post)
+{
+    $post->update($request->only('title', 'description'));
+
+    $post->saveMedia($request->featured, 'collection_name');
+
+    return view('post.template');
+}
+```
+
+post/template.blade.php
+```
+
+<form action="{{ $_action }}" method="POST">
+    @prepareMethod
+
+    <alpine inline-template :populate-data="{ model: @json($_model) }">
+
+        <vfg>
+
+            {
+                ....
+                name: 'title'
+            },
+            {
+                ...
+                name: 'description'
+            },
+            {
+                type: 'media-upload',
+                name: 'featured',
+                multiple: false
+            }
+
+        </vfg>
+
+        @create
+        <button type="submit">Create</button>
+        @else
+        <button type="submit">Save</button>
+        <button @click.prevent="$refs.deleteForm.submit()">Delete</button>
+        @endif
+
+    </alpine>
+
+</form>
+
+<form ref="deleteForm" action="{{ $_action }}" method="POST">
+    @method('delete')
+</form>
+
+```
+
+</p>
+</details>
+
+
+## IC Card Helper (Malaysia Citizen Identification Card)
+
+```
+$ic = new \Vortechron\Essentials\Core\IC($request->ic);
+
+$user->dob = $ic->getDateOfBirth();
+$user->ic = $ic->getIc();
+$user->gender = $ic->getGender();
+
+```
+
+## Turbolinks support
+
+Just include below line in your Kernel.php
+```
+\Vortechron\Essentials\Core\TurbolinksMiddleware::class
+```
+
+see Core directory for more classes
+
 ## helpers
+
+- [Ziggy](https://github.com/tightenco/ziggy) routes
+
+` @routes `
+
+- helpers
 
 see Http/helpers.php
 
@@ -87,11 +196,6 @@ py-4
 
 @dump($hm, $um, $hmm) // null, 'test', false
 ```
-
-
-## vuejs directives
-
-v-post - v-post on any anchor element to give the capability to post request to given route, example ```<a v-post="'@route('users.destroy', $user)'">```
 
 ## other
 

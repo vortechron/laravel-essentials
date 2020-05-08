@@ -13,6 +13,8 @@
     "require": {
         "calebporzio/awesome-helpers": "*",
         "pragmarx/countries-laravel": "^0.7.0",
+        "spatie/laravel-medialibrary": "^7.0.0",
+        "twilio/sdk": "^6.4",
         "tightenco/ziggy": "*"
     },
     "autoload": {

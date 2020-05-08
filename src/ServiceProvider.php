@@ -2,12 +2,15 @@
 
 namespace Vortechron\Essentials;
 
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Schema;
-use Vortechron\Essentials\Commands\GenerateCountries;
-use Vortechron\Essentials\Commands\Install;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
+use Vortechron\Essentials\Core\Turbolinks;
+use Vortechron\Essentials\Commands\Install;
+use Barryvdh\StackMiddleware\StackMiddleware;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Vortechron\Essentials\Commands\GenerateCountries;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -19,7 +22,7 @@ class ServiceProvider extends BaseServiceProvider
         'images'
     ];
 
-    public function boot()
+    public function boot(ResponseFactory $factory)
     {
         // Fix mysql issue
         Schema::defaultStringLength(191);
@@ -28,15 +31,17 @@ class ServiceProvider extends BaseServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->commands([
-                Install::class,
                 GenerateCountries::class,
             ]);
         }
 
+        $this->publishes([
+            __DIR__.'/../database/migrations/' => database_path('migrations')
+        ], 'migrations');
+
         $this->loadViewsFrom(__DIR__.'/../resources/views', config('laravel-essentials.view_namespace'));
         
         if ($this->app->runningInConsole()) {
-            
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('laravel-essentials.php'),
             ], 'config');
@@ -51,11 +56,45 @@ class ServiceProvider extends BaseServiceProvider
             'PragmaRX\CountriesLaravel\Package\Http\Controllers\Flag@download'
         )->name('countries.flags.download');
 
+        Route::middleware('web')
+        ->group(function () {
+            Route::post('/media-upload', 'Vortechron\Essentials\Http\Controllers\MediaUploadController@upload')->name('media.upload');
+
+            Route::post('/verify-check', 'Vortechron\Essentials\Http\Controllers\PhoneVerificationController@check')->name('verify.check');
+            Route::post('/verify-send', 'Vortechron\Essentials\Http\Controllers\PhoneVerificationController@send')->name('verify.send');
+            Route::post('/verify-code', 'Vortechron\Essentials\Http\Controllers\PhoneVerificationController@code')->name('verify.code');
+        });
+
+        $factory->macro('makeWithTurbolinks', function ($content, $options = []) use ($factory) {
+            $status =  array_pull($options, 'status', 200);
+            $headers = array_pull($options, 'headers', []);
+
+            $turbolinksHeaders = app('turbolinks')->convertTurbolinksOptions($options);
+            $headers = array_merge($headers, $turbolinksHeaders);
+
+            return $factory->make($content, $status, $headers);
+        });
+
+        $factory->macro('redirectToWithTurbolinks', function ($path, $options = []) use ($factory) {
+            $status =  array_pull($options, 'status', 302);
+            $headers = array_pull($options, 'headers', []);
+            $secure =  array_pull($options, 'secure');
+
+            $turbolinksHeaders = app('turbolinks')->convertTurbolinksOptions($options);
+            $headers = array_merge($headers, $turbolinksHeaders);
+
+            return $factory->redirectTo($path, $status, $headers, $secure);
+        });
+
     }
 
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'laravel-essentials');
+
+        $this->app->singleton('turbolinks', function ($app) {
+            return new Turbolinks;
+        });
     }
 
     protected function bootBlade()
@@ -110,14 +149,17 @@ class ServiceProvider extends BaseServiceProvider
         foreach (['null', 'false', 'true'] as $value) {
             Blade::directive('declare'. ucfirst($value), function ($expression) use ($value) {
                 return "<?php 
-
                 foreach([$expression] as \$arg) {
                     $\$arg = isset($\$arg) ? $\$arg : $value;
                 }
-                
                 ?>";
             });
         }
+
+        Blade::directive('prepareForm', function ($expression) {
+            $field = csrf_field();
+            return "<?php if (\$_state == 'create') { echo '{$field}'; } else { echo '{$field} <input type=\"hidden\" name=\"_method\" value=\"put\">'; } ?>";
+        });
         
     }
 }

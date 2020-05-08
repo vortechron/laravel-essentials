@@ -2,6 +2,20 @@
 
 use Illuminate\Validation\ValidationException;
 
+if (! function_exists('parseInput')) {
+    function parseInput($array)
+    {
+        foreach($array as $key => $value) {
+            if ($value == 'true' || $value == 'false')
+                $array[$key] = $value == 'true' ? 1 : 0;
+            else 
+                $array[$key] = $value;
+        }
+
+        return $array;
+    }
+}
+
 if (! function_exists('dangerInJson')) {
     function dangerInJson($array)
     {
