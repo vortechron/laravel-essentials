@@ -16,8 +16,8 @@ if (! function_exists('parseInput')) {
     }
 }
 
-if (! function_exists('dangerInJson')) {
-    function dangerInJson($array)
+if (! function_exists('danger_in_json')) {
+    function danger_in_json($array)
     {
         return abort(response()->json($array));
     }
@@ -107,13 +107,6 @@ if (! function_exists('base64url_encode')) {
     }
 }
 
-if (! function_exists('base64url_decode')) {
-    function base64url_decode($base64url)
-    {
-        return base64_decode(strtr($base64url, '-_', '+/'));
-    }
-}
-
 if (! function_exists('model')) {
     function model($model, $instance = false)
     {
@@ -124,15 +117,15 @@ if (! function_exists('model')) {
     }
 }
 
-if (! function_exists('placeholderImg')) {
-    function placeholderImg()
+if (! function_exists('placeholder_img')) {
+    function placeholder_img()
     {
         return asset('images/placeholder.png');
     }
 }
 
-if (! function_exists('removeElementBySelector')) {
-    function removeElementBySelector($selector, $html)
+if (! function_exists('remove_element_by_selector')) {
+    function remove_element_by_selector($selector, $html)
     {
         $html = \HTMLDomParser::str_get_html($html);
         foreach($html ->find($selector) as $item) {
@@ -144,9 +137,10 @@ if (! function_exists('removeElementBySelector')) {
     }
 }
 
-if (! function_exists('convertBytes'))
+if (! function_exists('convert_bytes'))
 {
-  function convertBytes($bytes, $precision = 2, $unit = true) { 
+  function convert_bytes($bytes, $precision = 2, $unit = true) 
+  { 
       $units = array('B', 'KB', 'MB', 'GB', 'TB'); 
       $bytes = max($bytes, 0); 
       $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
@@ -161,8 +155,8 @@ if (! function_exists('convertBytes'))
     } 
 }
 
-if (! function_exists('arrayToObject')) {
-    function arrayToObject($array)
+if (! function_exists('array_to_object')) {
+    function array_to_object($array)
     {
         return json_decode(json_encode($array));
     }

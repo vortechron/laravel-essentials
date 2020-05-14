@@ -85,7 +85,6 @@ class ServiceProvider extends BaseServiceProvider
 
             return $factory->redirectTo($path, $status, $headers, $secure);
         });
-
     }
 
     public function register()
@@ -156,10 +155,6 @@ class ServiceProvider extends BaseServiceProvider
             });
         }
 
-        Blade::directive('prepareForm', function ($expression) {
-            $field = csrf_field();
-            return "<?php if (\$_state == 'create') { echo '{$field}'; } else { echo '{$field} <input type=\"hidden\" name=\"_method\" value=\"put\">'; } ?>";
-        });
-        
+        Blade::include($namespace .'::components.essentials', 'essentials');
     }
 }
