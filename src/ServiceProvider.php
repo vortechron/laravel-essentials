@@ -2,6 +2,8 @@
 
 namespace Vortechron\Essentials;
 
+use Illuminate\Support\Collection;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -22,7 +24,7 @@ class ServiceProvider extends BaseServiceProvider
         'images'
     ];
 
-    public function boot(ResponseFactory $factory)
+    public function boot(ResponseFactory $factory, Filesystem $filesystem)
     {
         // Fix mysql issue
         Schema::defaultStringLength(191);
@@ -36,7 +38,7 @@ class ServiceProvider extends BaseServiceProvider
         }
 
         $this->publishes([
-            __DIR__.'/../database/migrations/' => database_path('migrations')
+            __DIR__.'/../database/migrations/create_essentials_table.php' => $this->getMigrationFileName($filesystem)
         ], 'migrations');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', config('laravel-essentials.view_namespace'));
@@ -156,5 +158,16 @@ class ServiceProvider extends BaseServiceProvider
         }
 
         Blade::include($namespace .'::components.essentials', 'essentials');
+    }
+
+    protected function getMigrationFileName(Filesystem $filesystem): string
+    {
+        $timestamp = date('Y_m_d_His');
+
+        return Collection::make($this->app->databasePath().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR)
+            ->flatMap(function ($path) use ($filesystem) {
+                return $filesystem->glob($path.'*_create_permission_tables.php');
+            })->push($this->app->databasePath()."/migrations/{$timestamp}_create_essentials_table.php")
+            ->first();
     }
 }

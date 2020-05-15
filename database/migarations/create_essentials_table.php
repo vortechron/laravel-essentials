@@ -86,6 +86,17 @@ class CreatePermissionTables extends Migration
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
             ->forget(config('permission.cache.key'));
+
+        Schema::create('defers', function (Blueprint $table) {
+            $table->id();
+            $table->string('master_type')->nullable();
+            $table->string('master_field')->nullable();
+            $table->string('slave_type')->nullable();
+            $table->string('slave_id')->nullable();
+            $table->string('session_key');
+            $table->boolean('is_bind')->default(0);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -106,5 +117,7 @@ class CreatePermissionTables extends Migration
         Schema::drop($tableNames['model_has_permissions']);
         Schema::drop($tableNames['roles']);
         Schema::drop($tableNames['permissions']);
+
+        Schema::dropIfExists('defers');
     }
 }
