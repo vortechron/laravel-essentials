@@ -2,9 +2,9 @@
 
 namespace Vortechron\Essentials\Http\Controllers;
 
-use App\Defer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Vortechron\Essentials\Models\Defer;
 
 class MediaUploadController extends Controller
 {
@@ -23,6 +23,29 @@ class MediaUploadController extends Controller
 
         return [
             'media' => $defer->getMedia()
+        ];
+    }
+
+    public function uploadManagerIndex(Request $request)
+    {
+        return [
+            'media' => user()->getMedia('manager'),
+            'igMedia' => user()->getMedia('ig-manager'),
+        ];
+    }
+    public function uploadManager(Request $request)
+    {
+        $this->validate($request, [
+            'media' => 'required|array',
+            'media.*' => 'required|file',
+        ]);
+
+        foreach ($request->media as $media) {
+            user()->addMedia($media)->toMediaCollection('manager');
+        }
+
+        return [
+            'media' => user()->getMedia('manager')
         ];
     }
 

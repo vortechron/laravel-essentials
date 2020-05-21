@@ -61,10 +61,16 @@ class ServiceProvider extends BaseServiceProvider
         Route::middleware('web')
         ->group(function () {
             Route::post('/media-upload', 'Vortechron\Essentials\Http\Controllers\MediaUploadController@upload')->name('media.upload');
+            Route::get('/media-upload-manager', 'Vortechron\Essentials\Http\Controllers\MediaUploadController@uploadManagerIndex')->name('media.uploadManagerIndex');
+            Route::post('/media-upload-manager', 'Vortechron\Essentials\Http\Controllers\MediaUploadController@uploadManager')->name('media.uploadManager');
 
             Route::post('/verify-check', 'Vortechron\Essentials\Http\Controllers\PhoneVerificationController@check')->name('verify.check');
             Route::post('/verify-send', 'Vortechron\Essentials\Http\Controllers\PhoneVerificationController@send')->name('verify.send');
             Route::post('/verify-code', 'Vortechron\Essentials\Http\Controllers\PhoneVerificationController@code')->name('verify.code');
+
+            Route::get('/instagram/authorize', 'Vortechron\Essentials\Http\Controllers\InstagramController@auth')->name('instagram.auth');
+            Route::get('/instagram/redirect', 'Vortechron\Essentials\Http\Controllers\InstagramController@redirect')->name('instagram.redirect');
+            Route::get('/instagram/import', 'Vortechron\Essentials\Http\Controllers\InstagramController@import')->name('instagram.import');
         });
 
         $factory->macro('makeWithTurbolinks', function ($content, $options = []) use ($factory) {

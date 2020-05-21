@@ -2,31 +2,40 @@
 
 namespace Vortechron\Essentials\Traits;
 
-use App\Defer;
 use Spatie\MediaLibrary\Models\Media;
+use Vortechron\Essentials\Models\Defer;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 trait HasMedia
 {
     use HasMediaTrait;
 
-    public function saveMedia($request, $collection = 'default')
+    public function saveDeferredMedia($request, $collection = 'default', $customProps = [])
     {
         $deferred = Defer::where('session_key', $request['key'])->first();
-        $media = isset($request['media']) ? $request['media'] : null;
-        
         if ($deferred) {
             foreach ($deferred->getMedia() as $deferredMedia) {
                 $deferredMedia->model_type = get_class($this);
                 $deferredMedia->model_id = $this->id;
                 $deferredMedia->collection_name = $collection;
+                
+                foreach ($customProps as $key => $value) {
+                    $deferredMedia->setCustomProperty($key, $value);
+                }
+                
                 $deferredMedia->save();
             }
 
             $deferred->is_bind = true;
             $deferred->save();
         }
+    }
 
+    public function saveMedia($request, $collection = 'default', $customProps = [])
+    {
+        $this->saveDeferredMedia($request, $collection, $customProps);
+
+        $media = isset($request['media']) ? $request['media'] : null;
         if ($media) {
             // Resync Media
             $this->updateMedia(

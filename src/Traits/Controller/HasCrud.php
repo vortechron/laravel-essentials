@@ -7,7 +7,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 trait HasCrud
 {
-    public function prepareIndexData($modelName, $title, $filters = [], $sorts = [], $paginate = 20, $callback = null)
+    public function prepareIndexData($modelName, $title = '', $filters = [], $sorts = [], $paginate = 20, $callback = null, $namespace = '')
     {
         $data = QueryBuilder::for($modelName)
             ->allowedFilters($filters)
@@ -17,19 +17,19 @@ trait HasCrud
         
         $data = $data->paginate($paginate);
 
-        View::share('_title', $title);
-        View::share('_data', $data);
+        View::share($namespace .'_title', $title);
+        View::share($namespace .'_data', $data);
     }
 
-    public function prepareData($model, $title = '', $action = '', $deleteAction = '', $backAction = '')
+    public function prepareData($model, $title = '', $action = '', $deleteAction = '', $backAction = '', $namespace = '')
     {
-        View::share('_model', $model);
-        View::share('_title', $title);
-        View::share('_state', ($state = isset($model['id']) ? 'edit' : 'create'));
-        View::share('_action', $action);
-        View::share('_deleteAction', $deleteAction);
-        View::share('_backAction', $backAction);
+        View::share($namespace .'_model', $model);
+        View::share($namespace .'_title', $title);
+        View::share($namespace .'_state', ($state = isset($model['id']) ? 'edit' : 'create'));
+        View::share($namespace .'_action', $action);
+        View::share($namespace .'_deleteAction', $deleteAction);
+        View::share($namespace .'_backAction', $backAction);
 
-        View::share('_data', compact('model', 'title', 'state', 'action', 'deleteAction', 'backAction'));
+        View::share($namespace . '_data', compact('model', 'title', 'state', 'action', 'deleteAction', 'backAction'));
     }
 }

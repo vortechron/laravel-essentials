@@ -6,8 +6,10 @@ use IlluminateAgnostic\Str\Support\Str;
 
 trait Modeler
 {
-    public function forModel($with)
+    public function forModel($with = [])
     {
+        $with = collect($this->with)->merge($with)->unique()->all();
+
         $this->load($with);
 
         $attributes = $this->getAllAttributes($with);
