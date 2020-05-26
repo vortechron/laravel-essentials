@@ -6,6 +6,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Filesystem\Filesystem;
+use Vortechron\Essentials\Models\Config;
+use Vortechron\Essentials\Core\Proxy;
 
 class NotificationController extends Controller
 {
@@ -59,12 +61,16 @@ class NotificationController extends Controller
 
         $notification = $data->where('slug', $notification)->first();
 
+        Config::set("notifications.{$notification->slug}", $request->subject);
+
         $content = $this->sanitize($notification, $request->content);
 
         file_put_contents(
             $notification->content_path,
             $content
         );
+
+        flashSaved();
 
         return $this->handleRedirect(route('admin.notifications.edit', $notification->slug), route('admin.notifications.index'));
     }
@@ -76,20 +82,27 @@ class NotificationController extends Controller
     
         foreach ($fs->files(app_path('Notifications')) as $file) {
             $baseName = $file->getBasename('.php');
-            $slugName = Str::slug($file->getBasename('.php'));
 
             $fullName = '\App\Notifications\\'. $baseName;
-            $instance = new $fullName;
+            $instance = new $fullName(
+                new Proxy(null), 
+                new Proxy(null), 
+                new Proxy(null), 
+                new Proxy(null), 
+                new Proxy(null), 
+                new Proxy(null),
+                new Proxy(null)
+            );
 
             if ($instance instanceof \Vortechron\Essentials\Core\Notification == false) continue;
 
             $basePath = $instance->getBasePath();
-            $contentPath = resource_path("views\\{$basePath}\\{$slugName}.blade.php");
-            $content = nl2br($fs->get($contentPath));
+            $contentPath = resource_path("views\\{$basePath}\\{$instance->getSlug()}.blade.php");
+            $content = $fs->get($contentPath);
 
             $data->push((object) [
                 'base_name' => $baseName,
-                'slug' => $slugName,
+                'slug' => $instance->getSlug(),
                 'instance' => $instance,
                 'content' => $content,
                 'content_path' => $contentPath
@@ -101,7 +114,24 @@ class NotificationController extends Controller
 
     protected function sanitize($notification, $raw)
     {
-        fo
+        // temporary replace variable with placeholder 
+        // $content = br2nl($raw);
+        $content = $raw;
+        $content = str_replace(array("\r\n","\r","\n","\\r","\\n","\\r\\n"),"", $content);
+
+        foreach ($notification->instance->getData() as $key => $value) {
+            $content = str_replace("\${$key}", "{{{$key}}}", $content);
+        }
+
+        // sanitize
+        $content = str_replace(['$', '<?php', '<?=', '?>', '\r'], '', $content);
+
+        // replace back
+        foreach ($notification->instance->getData() as $key => $value) {
+            $content = str_replace("{{{$key}}}", "\${$key}", $content);
+        }
+
+        return $content;
     }
 
 }

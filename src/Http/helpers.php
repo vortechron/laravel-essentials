@@ -1,6 +1,8 @@
 <?php
 
+use Vortechron\Essentials\Models\Setting;
 use Illuminate\Validation\ValidationException;
+use Vortechron\Essentials\Models\Config;
 
 if (! function_exists('parseInput')) {
     function parseInput($array)
@@ -43,6 +45,20 @@ if (! function_exists('flash')) {
             $text = ['title' => $title, 'subtitle' => ''];
         }
         return request()->session()->flash($type . 'Flash', $text);
+    }
+}
+
+if (! function_exists('flashSaved')) {
+    function flashSaved()
+    {
+        return flash('Your changes has been saved');
+    }
+}
+
+if (! function_exists('flashDeleted')) {
+    function flashDeleted()
+    {
+        return flash('Deleted Successfully');
     }
 }
 
@@ -180,5 +196,31 @@ if (! function_exists('datetime_format')) {
     function datetime_format()
     {
         return 'Y-m-d\Th:i';
+    }
+}
+
+if (! function_exists('br2nl')) {
+    function br2nl($string)
+    {
+        return preg_replace('/\<br(\s*)?\/?\>/i', "\n", $string);
+    }
+}
+
+if (! function_exists('setting')) {
+    function setting($group = null, $key = null, $default = null)
+    {
+        if (func_num_args() == 0) return new Setting;
+
+        return Setting::find($group = null, $key = null, $default = null);
+    }
+}
+
+if (! function_exists('db_config')) {
+    function db_config($key = null, $default = null)
+    {
+        if (func_num_args() == 0) return new Config;
+        if (func_num_args() == 1) return Config::find($key);
+
+        return Config::find($key, $default);
     }
 }

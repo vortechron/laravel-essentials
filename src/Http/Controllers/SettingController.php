@@ -2,9 +2,9 @@
 
 namespace Vortechron\Essentials\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Setting;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Vortechron\Essentials\Models\Setting;
 
 class SettingController extends Controller
 {
@@ -42,6 +42,8 @@ class SettingController extends Controller
                 $setting->saveMedia($value);
                 $setting->value = '_is-media_';
                 $setting->save();
+            } elseif (is_array($value) && isset($value['key'])) {
+                $setting->delete();
             }
         }
 

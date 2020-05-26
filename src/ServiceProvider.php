@@ -58,6 +58,7 @@ class ServiceProvider extends BaseServiceProvider
             'PragmaRX\CountriesLaravel\Package\Http\Controllers\Flag@download'
         )->name('countries.flags.download');
 
+        Route::post('/permission-check/{name}', 'Vortechron\Essentials\Http\Controllers\MediaUploadController@upload')->name('media.upload');
         Route::middleware('web')
         ->group(function () {
             Route::post('/media-upload', 'Vortechron\Essentials\Http\Controllers\MediaUploadController@upload')->name('media.upload');

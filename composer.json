@@ -16,6 +16,7 @@
         "spatie/laravel-medialibrary": "^7.0.0",
         "spatie/laravel-permission": "^3.11",
         "spatie/laravel-query-builder": "^2.8",
+        "spatie/laravel-searchable": "^1.6",
         "twilio/sdk": "^6.4",
         "tightenco/ziggy": "*"
     },

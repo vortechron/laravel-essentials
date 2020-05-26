@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Route;
 
 class Essentials
 {
+    public static function rolesRoute()
+    {
+        Route::resource('roles', '\Vortechron\Essentials\Http\Controllers\RoleController');
+    }
+
     public static function settingsRoute()
     {
         Route::get('/settings', '\Vortechron\Essentials\Http\Controllers\SettingController@index')->name('settings.index');
@@ -16,6 +21,5 @@ class Essentials
     public static function notificationsRoute()
     {
         Route::resource('notifications', '\Vortechron\Essentials\Http\Controllers\NotificationController');
-
     }
 }

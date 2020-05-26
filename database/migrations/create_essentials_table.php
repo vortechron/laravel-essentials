@@ -97,6 +97,21 @@ class CreatePermissionTables extends Migration
             $table->boolean('is_bind')->default(0);
             $table->timestamps();
         });
+
+        Schema::create('configs', function (Blueprint $table) {
+            $table->id();
+            $table->longText('key');
+            $table->longText('value')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('settings', function (Blueprint $table) {
+            $table->id();
+            $table->text('key');
+            $table->longText('value')->nullable();
+            $table->text('group');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -119,5 +134,7 @@ class CreatePermissionTables extends Migration
         Schema::drop($tableNames['permissions']);
 
         Schema::dropIfExists('defers');
+        Schema::dropIfExists('configs');
+        Schema::dropIfExists('settings');
     }
 }

@@ -2,9 +2,11 @@
 
 namespace Vortechron\Essentials\Core;
 
+use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification as BaseNoti;
+use Vortechron\Essentials\Models\Config;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification as BaseNoti;
 
 class Notification extends BaseNoti
 {
@@ -33,18 +35,24 @@ class Notification extends BaseNoti
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)->markdown(
-            $this->base_path . '.' . (new \ReflectionClass($this))->getShortName(), 
-            $this->getData()
-        );
+        extract($this->reassignWithProxy());
+        return (new MailMessage)
+            ->subject(eval($this->getSubject()))
+            ->markdown(
+                $this->base_path . '.' . (new \ReflectionClass($this))->getShortName(), 
+                $this->getData()
+            );
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
+    protected function reassignWithProxy()
+    {
+        $data = collect($this->getData());
+        
+        return $data->map(function ($value, $key) {
+            return new GetterProxy($value);
+        })->toArray();
+    }
+
     public function toArray($notifiable)
     {
         return [
@@ -59,6 +67,18 @@ class Notification extends BaseNoti
         ];
     }
 
+    public function getDataDescription()
+    {
+        return [
+            //
+        ];
+    }
+
+    public function getSlug()
+    {
+        return Str::slug((new \ReflectionClass($this))->getShortName());
+    }
+
     public function getBasePath()
     {
         return $this->base_path;
@@ -66,7 +86,9 @@ class Notification extends BaseNoti
 
     public function getSubject()
     {
-        return $this->subject;
+        $subject = Config::find("notifications.{$this->getSlug()}");
+
+        return $subject ?? $this->subject;
     }
 
     public function getDescription()

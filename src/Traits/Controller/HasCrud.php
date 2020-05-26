@@ -7,6 +7,12 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 trait HasCrud
 {
+    public function prepareAction($title = '', $action = '', $namespace = '')
+    {
+        View::share($namespace .'_action_title', $title);
+        View::share($namespace .'_action_url', $action);
+    }
+
     public function prepareIndexData($modelName, $title = '', $filters = [], $sorts = [], $paginate = 20, $callback = null, $namespace = '')
     {
         $data = QueryBuilder::for($modelName)
