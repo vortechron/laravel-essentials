@@ -1,8 +1,9 @@
 <?php
 
+use Illuminate\Support\Str;
+use Vortechron\Essentials\Models\Config;
 use Vortechron\Essentials\Models\Setting;
 use Illuminate\Validation\ValidationException;
-use Vortechron\Essentials\Models\Config;
 
 if (! function_exists('parseInput')) {
     function parseInput($array)
@@ -126,7 +127,7 @@ if (! function_exists('base64url_encode')) {
 if (! function_exists('model')) {
     function model($model, $instance = false)
     {
-        $model = '\App\\'. studly_case($model);
+        $model = '\App\\'. Str::studly($model);
         if ($instance)
             return new $model;
         return $model;
