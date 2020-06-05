@@ -55,7 +55,7 @@ class GenerateCountries extends Command
                     return [
                         'name' => $commonName,
                         'code' => $country->cca2,
-                        'calling_code' => optional(optional($country)->dialling['calling_code'])[0],
+                        'calling_code' => optional(optional(optional($country)->dialling)['calling_code'])[0],
                         'flag' => route('countries.flags.file', $country->cca3),
                         'states' => $country->states->pluck('name')->values()->toArray()
                     ];

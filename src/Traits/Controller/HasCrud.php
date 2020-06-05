@@ -2,6 +2,7 @@
 
 namespace Vortechron\Essentials\Traits\Controller;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -15,13 +16,18 @@ trait HasCrud
 
     public function prepareIndexData($modelName, $title = '', $filters = [], $sorts = [], $paginate = 20, $callback = null, $namespace = '')
     {
-        $data = QueryBuilder::for($modelName)
-            ->allowedFilters($filters)
-            ->allowedSorts($sorts);
+        if ($modelName instanceof Collection) {
+            $data = $modelName;
+        } else {
+            $data = QueryBuilder::for($modelName)
+                ->allowedFilters($filters)
+                ->allowedSorts($sorts);
+    
+            if ($callback) $data = $callback($data);
+            
+            $data = $data->paginate($paginate);
+        }
 
-        if ($callback) $data = $callback($data);
-        
-        $data = $data->paginate($paginate);
 
         View::share($namespace .'_title', $title);
         View::share($namespace .'_data', $data);

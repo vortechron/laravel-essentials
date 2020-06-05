@@ -64,20 +64,24 @@ class InstagramController extends Controller
         $content = $response->getBody()->getContents();
         $oAuth = json_decode($content);
 
+        user()->getMedia('ig-manager')->delete();
         foreach ((array) $oAuth->data as $rawMedia) {
             $response = Http::get("https://graph.instagram.com/{$rawMedia->id}?fields=id,media_type,media_url,username,timestamp,caption&access_token={$accessToken}");
             $content = $response->json();
+
+            $media = user()->addMediaFromUrl($content['media_url'])->toMediaCollection('ig-manager');
             
-            InstagramMedia::create([
-                'user_id' => user()->id,
-                'graph_id' => $content['id'],
-                'type' => $content['media_type'],
-                'url' => $content['media_url'],
-                'caption' => $content['caption'],
-                'publish_at' => carbon($content['timestamp'])->format(timestamp_format()),
-            ]);
+            // get tags from captions
+            preg_match_all('/#[^\s#]*/i', $content['caption'], $matches);
+
+            $media->setCustomProperty('description', $content['caption'])
+                ->setCustomProperty('tags', isset($matches[0]) ? implode('|', $matches[0]) : '')
+                ->setCustomProperty('type', 'instagram');
+
+            $media->created_at = carbon($content['timestamp'])->format(timestamp_format());
+            $media->save();
         }
 
-        return redirect()->route('account.media.createInstagram');
+        return redirect()->route('closeable');
     }
 }
