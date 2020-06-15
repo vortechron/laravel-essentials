@@ -32,6 +32,8 @@ trait Modeler
             }
         }
 
+        $attributes['_instance'] = $this;
+
         return $attributes;
     }
 

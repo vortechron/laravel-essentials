@@ -18,7 +18,8 @@
         "spatie/laravel-query-builder": "^2.8",
         "spatie/laravel-searchable": "^1.6",
         "twilio/sdk": "^6.4",
-        "tightenco/ziggy": "*"
+        "tightenco/ziggy": "*",
+        "torann/laravel-meta-tags": "^3.0"
     },
     "autoload": {
         "files": [

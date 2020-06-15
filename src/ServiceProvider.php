@@ -165,6 +165,7 @@ class ServiceProvider extends BaseServiceProvider
         }
 
         Blade::include($namespace .'::components.essentials', 'essentials');
+        Blade::include($namespace .'::components.meta', 'meta');
     }
 
     protected function getMigrationFileName(Filesystem $filesystem): string
