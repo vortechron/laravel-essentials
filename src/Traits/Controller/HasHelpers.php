@@ -2,6 +2,8 @@
 
 namespace Vortechron\Essentials\Traits\Controller;
 
+use Illuminate\Support\Facades\View;
+
 trait HasHelpers
 {
     protected function handleRedirect($current, $orBack)
@@ -12,5 +14,10 @@ trait HasHelpers
         if (! $redirect) return $withRedirect ? $orBack : redirect()->to($orBack);
 
         return redirect()->to($current);
+    }
+
+    protected function prepareCountriesData()
+    {
+        View::share('_countries', \Storage::get('countries'));
     }
 }
