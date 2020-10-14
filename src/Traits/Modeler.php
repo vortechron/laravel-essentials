@@ -61,6 +61,8 @@ trait Modeler
                 } else {
                     $attributes[$column] = null;
                 }
+
+                $attributes[$column] = old($column, $attributes[$column]);
             };
         }
 

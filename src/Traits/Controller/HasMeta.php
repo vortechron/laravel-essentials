@@ -3,6 +3,7 @@
 namespace Vortechron\Essentials\Traits\Controller;
 
 use Torann\LaravelMetaTags\Facades\MetaTag;
+use Vortechron\Essentials\Models\Setting;
 
 trait HasMeta
 {
@@ -10,9 +11,9 @@ trait HasMeta
     {
         if (func_num_args() == 0) return app('metatag');
 
-        $title = $title ?: model('setting')::getValue('general.title') ?? config('meta-tags.title', 'Laravel');
-        $desc = $desc ?: model('setting')::getValue('general.description') ?? config('meta-tags.description', 'Laravel');
-        $image = asset($image ?: model('setting')::getValue('general.image') ?? config('meta-tags.image', 'favicon.png') );
+        $title = $title ?: Setting::find('general', 'title') ?? config('meta-tags.title', 'Laravel');
+        $desc = $desc ?: Setting::find('general', 'description') ?? config('meta-tags.description', 'Laravel');
+        $image = asset($image ?: Setting::find('general', 'image') ?? config('meta-tags.image', 'favicon.png') );
 
         MetaTag::set('title', $title);
         MetaTag::set('description', $desc);

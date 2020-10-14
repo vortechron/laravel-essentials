@@ -20,7 +20,7 @@ class NotificationController extends Controller
     {
         $data = $this->getNotifications();
 
-        return view('admin.notification.index', compact('data'));
+        return view(config('laravel-essentials.admin.view_path').'.notifications.index', compact('data'));
     }
 
     /**
@@ -40,7 +40,7 @@ class NotificationController extends Controller
             'content' => $notification->content
         ];
 
-        return view('admin.notification.template', compact('notification', 'model'));
+        return view(config('laravel-essentials.admin.view_path').'.notifications.template', compact('notification', 'model'));
     }
 
     /**

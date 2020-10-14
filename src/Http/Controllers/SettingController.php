@@ -10,12 +10,12 @@ class SettingController extends Controller
 {
     public function index()
     {
-        return view('admin.setting.index');
+        return view(config('laravel-essentials.admin.view_path').'.settings.index');
     }
 
     public function edit($group)
     {
-        $form = view('admin.setting.'. $group);
+        $form = view(config('laravel-essentials.admin.view_path').'.settings.'. $group);
 
         $settings = Setting::whereGroup($group)->get();
         $model = [];
@@ -28,9 +28,9 @@ class SettingController extends Controller
             }
         }
 
-        $this->prepareData($model, ucfirst($group) . ' Settings', route('admin.settings.update', $group), '', route('admin.settings.index'));
+        $this->prepareData($model, ucfirst($group) . ' Settings', route(config('laravel-essentials.admin.route_prefix').'.settings.update', $group), '', route(config('laravel-essentials.admin.route_prefix').'.settings.index'));
 
-        return view('admin.setting.template', compact('form'));
+        return view(config('laravel-essentials.admin.view_path').'.settings.template', compact('form'));
     }
 
     public function update(Request $request, $group)
@@ -47,6 +47,6 @@ class SettingController extends Controller
             }
         }
 
-        return $this->handleRedirect(route('admin.settings.edit', $group), route('admin.settings.index'));
+        return $this->handleRedirect(route(config('laravel-essentials.admin.route_prefix').'.settings.edit', $group), route(config('laravel-essentials.admin.route_prefix').'.settings.index'));
     }
 }

@@ -14,17 +14,17 @@ class RoleController extends Controller
     {
         $this->prepareIndexData(Role::class, 'Manage Roles', ['name'], ['name', 'created_at']);
 
-        return view('admin.user.role.index');
+        return view(config('laravel-essentials.admin.view_path').'.users.roles.index');
     }
     
     public function create()
     {
-        $this->prepareData((new Role)->forModel([]), 'Create Role', route('admin.roles.store'));
+        $this->prepareData((new Role)->forModel([]), 'Create Role', route(config('laravel-essentials.admin.route_prefix').'.roles.store'));
 
         View::share('permissions', Permission::all());
         View::share('role', new Role);
 
-        return view('admin.user.role.template');
+        return view(config('laravel-essentials.admin.view_path').'.users.roles.template');
     }
 
     public function store(Request $request)
@@ -35,17 +35,17 @@ class RoleController extends Controller
             $role->givePermissionTo($permission);
         }
 
-        return $this->handleRedirect(route('admin.roles.edit', $role), route('admin.roles.index'));   
+        return $this->handleRedirect(route(config('laravel-essentials.admin.route_prefix').'.roles.edit', $role), route(config('laravel-essentials.admin.route_prefix').'.roles.index'));   
     }
 
     public function edit(Role $role)
     {
-        $this->prepareData($role->forModel([]), 'Edit Role', route('admin.roles.update', $role), route('admin.roles.destroy', $role), route('admin.roles.index'));
+        $this->prepareData($role->forModel([]), 'Edit Role', route(config('laravel-essentials.admin.route_prefix').'.roles.update', $role), route(config('laravel-essentials.admin.route_prefix').'.roles.destroy', $role), route(config('laravel-essentials.admin.route_prefix').'.roles.index'));
 
         View::share('permissions', Permission::all());
         View::share('role', $role);
 
-        return view('admin.user.role.template');
+        return view(config('laravel-essentials.admin.view_path').'.users.roles.template');
     }
 
     public function update(Request $request, Role $role)
@@ -59,7 +59,7 @@ class RoleController extends Controller
             $role->givePermissionTo($permission);
         }
         
-        return $this->handleRedirect(route('admin.roles.edit', $role), route('admin.roles.index'));   
+        return $this->handleRedirect(route(config('laravel-essentials.admin.route_prefix').'.roles.edit', $role), route(config('laravel-essentials.admin.route_prefix').'.roles.index'));   
     }
 
     public function destroy(Role $role)
@@ -69,6 +69,6 @@ class RoleController extends Controller
         $role->permissions()->detach();
         $role->delete();
 
-        return redirect()->route('admin.roles.index');
+        return redirect()->route(config('laravel-essentials.admin.route_prefix').'.roles.index');
     }
 }

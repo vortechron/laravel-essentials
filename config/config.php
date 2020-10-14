@@ -16,4 +16,10 @@ return [
     'enable_error' => false,
 
     'view_namespace' => 'vtr',
+    
+    'admin' => [
+        'view_path' => 'admin',
+
+        'route_prefix' => 'admin'
+    ]
 ];
