@@ -45,7 +45,7 @@ if (! function_exists('flash')) {
         if (is_null($subtitle)) {
             $text = ['title' => $title, 'subtitle' => ''];
         }
-        return request()->session()->flash($type . 'Flash', $text);
+        return session()->flash($type . 'Flash', $text);
     }
 }
 
