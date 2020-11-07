@@ -31,6 +31,6 @@ class Proxy
 
     public function __toString()
     {
-        return (string) null;
+        return (string) $this->candidate;
     }
 }
