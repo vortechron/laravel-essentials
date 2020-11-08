@@ -21,8 +21,14 @@ class MediaUploadController extends Controller
             $defer->addMedia($media)->toMediaCollection();
         }
 
+        $medias = $defer->getMedia()->map(function ($media) {
+            return array_merge([
+                'full_url' => $media->getFullUrl(),
+            ], $media->toArray());
+        });
+
         return [
-            'media' => $defer->getMedia()
+            'media' => $medias->toArray()
         ];
     }
 

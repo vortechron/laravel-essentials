@@ -2,7 +2,9 @@
 
 namespace Vortechron\Essentials\Models;
 
-class Media extends \Spatie\MediaLibrary\Models\Media
+use Spatie\MediaLibrary\MediaCollections\Models\Media as ModelsMedia;
+
+class Media extends ModelsMedia
 {
     use \Vortechron\Essentials\Traits\Modeler;
 

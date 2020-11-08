@@ -28,14 +28,14 @@ trait HasMedia
     {
         $ids = collect($request ?? [])->pluck('id')->toArray();
         if (count($ids) > 0) {
-            $defers = config('medialibrary.media_model')::whereIn('id', $ids)->get();
+            $defers = config('media-library.media_model')::whereIn('id', $ids)->get();
             $this->saveDeferredMedia($defers, $collection, $customProps);
             $this->updateMedia(
                 $defers->toArray(), 
                 $collection
             );
     
-            config('medialibrary.media_model')::setNewOrder($ids);
+            config('media-library.media_model')::setNewOrder($ids);
         } else {
             $this->updateMedia([], $collection);
         }
