@@ -9,45 +9,35 @@ trait HasMedia
 {
     use InteractsWithMedia;
 
-    public function saveDeferredMedia($request, $collection = 'default', $customProps = [])
+    public function saveDeferredMedia($defers, $collection = 'default', $customProps = [])
     {
-        $deferred = Defer::where('session_key', $request['key'])->first();
-        if ($deferred) {
-            foreach ($deferred->getMedia() as $deferredMedia) {
-                $deferredMedia->model_type = get_class($this);
-                $deferredMedia->model_id = $this->id;
-                $deferredMedia->collection_name = $collection;
-                
-                foreach ($customProps as $key => $value) {
-                    $deferredMedia->setCustomProperty($key, $value);
-                }
-                
-                $deferredMedia->save();
+        foreach ($defers as $deferredMedia) {
+            $deferredMedia->model_type = get_class($this);
+            $deferredMedia->model_id = $this->id;
+            $deferredMedia->collection_name = $collection;
+            
+            foreach ($customProps as $key => $value) {
+                $deferredMedia->setCustomProperty($key, $value);
             }
-
-            $deferred->is_bind = true;
-            $deferred->save();
+            
+            $deferredMedia->save();
         }
     }
 
     public function saveMedia($request, $collection = 'default', $customProps = [])
     {
-        $this->saveDeferredMedia($request, $collection, $customProps);
-
-        $media = isset($request['media']) ? $request['media'] : null;
-        if ($media) {
-            // Resync Media
+        $ids = collect($request ?? [])->pluck('id')->toArray();
+        if (count($ids) > 0) {
+            $defers = config('medialibrary.media_model')::whereIn('id', $ids)->get();
+            $this->saveDeferredMedia($defers, $collection, $customProps);
             $this->updateMedia(
-                config('medialibrary.media_model')::whereIn('id', $media)->get()->toArray(), 
+                $defers->toArray(), 
                 $collection
             );
     
-            config('medialibrary.media_model')::setNewOrder($media);
+            config('medialibrary.media_model')::setNewOrder($ids);
         } else {
-            $this->updateMedia(
-                [], 
-                $collection
-            );
+            $this->updateMedia([], $collection);
         }
     }
 }

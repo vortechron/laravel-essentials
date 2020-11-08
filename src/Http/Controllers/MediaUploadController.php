@@ -2,6 +2,7 @@
 
 namespace Vortechron\Essentials\Http\Controllers;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Vortechron\Essentials\Models\Defer;
@@ -11,12 +12,11 @@ class MediaUploadController extends Controller
     public function upload(Request $request)
     {
         $this->validate($request, [
-            'key' => 'required|string|min:1',
             'media' => 'required|array',
             'media.*' => 'required|file',
         ]);
 
-        $defer = Defer::create(['session_key' => $request->key]);
+        $defer = Defer::create(['session_key' => Str::random(7)]);
         foreach ($request->media as $media) {
             $defer->addMedia($media)->toMediaCollection();
         }
