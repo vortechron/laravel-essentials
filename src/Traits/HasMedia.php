@@ -2,13 +2,12 @@
 
 namespace Vortechron\Essentials\Traits;
 
-use Spatie\MediaLibrary\Models\Media;
 use Vortechron\Essentials\Models\Defer;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 trait HasMedia
 {
-    use HasMediaTrait;
+    use InteractsWithMedia;
 
     public function saveDeferredMedia($request, $collection = 'default', $customProps = [])
     {
