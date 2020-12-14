@@ -125,11 +125,12 @@ if (! function_exists('base64url_encode')) {
 }
 
 if (! function_exists('model')) {
-    function model($model, $instance = false)
+    function model($model, $instance = false, $namespace = '\App\Models\\')
     {
-        $model = '\App\\'. Str::studly($model);
-        if ($instance)
-            return new $model;
+        $model = $namespace . Str::studly($model);
+        
+        if ($instance) return new $model;
+
         return $model;
     }
 }

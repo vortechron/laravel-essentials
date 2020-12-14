@@ -28,7 +28,6 @@ trait HasCrud
             $data = $data->paginate($paginate);
         }
 
-
         View::share($namespace .'_title', $title);
         View::share($namespace .'_data', $data);
     }

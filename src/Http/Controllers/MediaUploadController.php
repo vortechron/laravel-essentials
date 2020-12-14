@@ -35,8 +35,8 @@ class MediaUploadController extends Controller
     public function uploadManagerIndex(Request $request)
     {
         return [
-            'media' => user()->getMedia('manager'),
-            'igMedia' => user()->getMedia('ig-manager'),
+            'media' => user()->getMedia('manager')->toArray(),
+            'igMedia' => user()->getMedia('ig-manager')->toArray(),
         ];
     }
     public function uploadManager(Request $request)

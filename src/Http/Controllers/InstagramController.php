@@ -64,7 +64,10 @@ class InstagramController extends Controller
         $content = $response->getBody()->getContents();
         $oAuth = json_decode($content);
 
-        user()->getMedia('ig-manager')->delete();
+        user()->getMedia('ig-manager')->each(function ($model) {
+            $model->delete();
+        });
+        
         foreach ((array) $oAuth->data as $rawMedia) {
             $response = Http::get("https://graph.instagram.com/{$rawMedia->id}?fields=id,media_type,media_url,username,timestamp,caption&access_token={$accessToken}");
             $content = $response->json();

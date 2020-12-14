@@ -20,4 +20,13 @@ trait HasHelpers
     {
         View::share('_countries', \Storage::get('countries'));
     }
+
+    protected function inertia($component = null, $props = [])
+    {
+        foreach (View::getShared() as $key => $value) {
+            \Inertia\Inertia::share($key, $value);
+        }
+
+        return inertia($component, $props);
+    }
 }
