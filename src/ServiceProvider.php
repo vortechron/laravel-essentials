@@ -70,6 +70,14 @@ class ServiceProvider extends BaseServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'laravel-essentials');
+
+        $this->app->singleton('metatag', function ($app) {
+            return new MetaTag(
+                $app['request'],
+                $app['config']['meta-tags'],
+                $app['config']->get('app.locale')
+            );
+        });
     }
 
     protected function bootBlade()

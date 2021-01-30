@@ -19,8 +19,7 @@
         "spatie/laravel-sluggable": "^2.6",
         "spatie/laravel-searchable": "^1.7.0",
         "twilio/sdk": "^6.9.2",
-        "tightenco/ziggy": "*",
-        "torann/laravel-meta-tags": "4.2.x-dev"
+        "tightenco/ziggy": "*"
     },
     "autoload": {
         "files": [

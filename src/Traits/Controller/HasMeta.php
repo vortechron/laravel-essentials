@@ -2,8 +2,8 @@
 
 namespace Vortechron\Essentials\Traits\Controller;
 
-use Torann\LaravelMetaTags\Facades\MetaTag;
 use Vortechron\Essentials\Models\Setting;
+use Vortechron\Essentials\Facades\MetaTag;
 
 trait HasMeta
 {
