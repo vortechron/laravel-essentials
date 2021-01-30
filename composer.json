@@ -20,7 +20,7 @@
         "spatie/laravel-searchable": "^1.7.0",
         "twilio/sdk": "^6.9.2",
         "tightenco/ziggy": "*",
-        "torann/laravel-meta-tags": "^3.0.8"
+        "torann/laravel-meta-tags": "4.2.x-dev"
     },
     "autoload": {
         "files": [
