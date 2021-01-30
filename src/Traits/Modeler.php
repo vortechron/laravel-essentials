@@ -3,6 +3,7 @@
 namespace Vortechron\Essentials\Traits;
 
 use IlluminateAgnostic\Str\Support\Str;
+use Vortechron\Essentials\Core\ForModel;
 
 trait Modeler
 {
@@ -34,12 +35,12 @@ trait Modeler
 
         $attributes['_instance'] = $this;
 
-        return $attributes;
+        return new ForModel($attributes);
     }
 
     public function getAllAttributes($with = [])
     {
-        $forModelAttributes = isset($this->for_model) ? $this->for_model : [];
+        $forModelAttributes = isset($this->forModel) ? $this->forModel : [];
 
         $forModelAttributes = collect($forModelAttributes)->transform(function ($att) {
             return '_data_' . $att;
@@ -69,7 +70,7 @@ trait Modeler
         return $attributes;
     }
 
-        /**
+    /**
      * Determine if a get mutator exists for an attribute.
      *
      * @param  string  $key

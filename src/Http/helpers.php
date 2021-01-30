@@ -194,13 +194,6 @@ if (! function_exists('timestamp_format')) {
     }
 }
 
-if (! function_exists('datetime_format')) {
-    function datetime_format()
-    {
-        return 'Y-m-d\Th:i';
-    }
-}
-
 if (! function_exists('br2nl')) {
     function br2nl($string)
     {

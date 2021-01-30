@@ -2,8 +2,8 @@
 
 namespace Vortechron\Essentials\Models;
 
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Vortechron\Essentials\Traits\HasMedia as TraitsHasMedia;
 
 class Setting extends Model implements HasMedia

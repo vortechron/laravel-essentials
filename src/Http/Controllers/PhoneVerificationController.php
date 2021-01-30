@@ -19,7 +19,7 @@ class PhoneVerificationController extends Controller
     public function __construct()
     {
         // Initialize the Authy API and the Twilio Client
-        $this->authy = new \Authy\AuthyApi(config('laravel-essentials.twilio')['AUTHY_API_KEY']);
+        // $this->authy = new \Authy\AuthyApi(config('laravel-essentials.twilio')['AUTHY_API_KEY']);
         // Twilio credentials
         $this->sid = config('laravel-essentials.twilio')['TWILIO_ACCOUNT_SID'];
         $this->authToken = config('laravel-essentials.twilio')['TWILIO_AUTH_TOKEN'];
