@@ -7,6 +7,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
+use Vortechron\Essentials\Core\MetaTag;
 use Vortechron\Essentials\Core\Turbolinks;
 use Vortechron\Essentials\Commands\Install;
 use Barryvdh\StackMiddleware\StackMiddleware;
@@ -74,7 +75,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->singleton('metatag', function ($app) {
             return new MetaTag(
                 $app['request'],
-                $app['config']['meta-tags'],
+                $app['config']['laravel-essentials']['meta'],
                 $app['config']->get('app.locale')
             );
         });
