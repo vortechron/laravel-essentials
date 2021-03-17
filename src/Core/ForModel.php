@@ -36,12 +36,23 @@ class ForModel implements ArrayAccess, JsonSerializable
 
     public function jsonSerialize()
     {
+        return $this->toArray();
+    }
+
+    public function toArray()
+    {
         return $this->data;
     }
 
-    public function modify(callable $callback)
+    public function modify($callback)
     {
-        $this->data = $callback($this->data);
+        if (is_array($callback)) {
+            $this->data = array_merge($this->data, $callback);
+        }
+
+        if (is_callable($callback)) {
+            $this->data = $callback($this->data);
+        }
         
         return $this;
     }

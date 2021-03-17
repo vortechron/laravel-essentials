@@ -18,6 +18,7 @@
         "spatie/laravel-query-builder": "^3.3.3",
         "spatie/laravel-sluggable": "^2.6",
         "spatie/laravel-searchable": "^1.7.0",
+        "tormjens/eventy": "^0.7.0",
         "twilio/sdk": "^6.9.2",
         "tightenco/ziggy": "*"
     },
